@@ -1,6 +1,7 @@
 // Gestionnaire des campagnes et QR codes
 const DEBUG = false;
-const SERVER_URL = "http://192.168.42.88:3000";
+const SERVER_URL = localStorage.getItem("SERVER_URL") || "http://localhost:3000";
+
 let campaigns = [];
 
 let campaignsPerPage = 10;  // Nombre de campagnes par page

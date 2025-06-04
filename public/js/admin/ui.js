@@ -3,10 +3,13 @@ let proofFiles = [];
 // Fonctions d'interface utilisateur et de manipulation DOM
 document.addEventListener('DOMContentLoaded', function() {
 
-  
+
   // Charger les campagnes
   console.log("Chargement initial des campagnes...");
   loadCampaigns();
+
+  // Charger les dernières actions
+  loadRecentActions();
 });
 
 // Afficher les erreurs de manière visible
@@ -26,6 +29,27 @@ function showStatus(message) {
     statusDiv.style.display = 'none';
   }, 3000);
   console.log(message);
+}
+
+// Charger les dernières actions depuis le serveur
+function loadRecentActions() {
+  const list = document.getElementById('recent-actions-list');
+  if (!list) return;
+
+  fetch(`${SERVER_URL}/scanlogs?limit=5`)
+    .then(res => res.json())
+    .then(actions => {
+      list.innerHTML = '';
+      actions.forEach(act => {
+        const li = document.createElement('li');
+        const date = new Date(act.timestamp * 1000).toLocaleString('fr-FR');
+        li.textContent = `[${date}] ${act.scan_type} - ${act.location_id} - ${act.uuid}`;
+        list.appendChild(li);
+      });
+    })
+    .catch(err => {
+      console.error('Erreur chargement actions:', err);
+    });
 }
 // Structure HTML complète corrigée pour openCampaignPopup
 

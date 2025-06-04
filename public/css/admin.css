@@ -4217,3 +4217,19 @@ button > span:first-child {
 .mb-2 { margin-bottom: 16px; }
 .mb-3 { margin-bottom: 24px; }
 
+/* Section des dernières actions */
+.recent-actions-section {
+  margin: 20px 0;
+}
+
+.recent-actions-list {
+  list-style: none;
+  padding: 0;
+}
+
+.recent-actions-list li {
+  padding: 4px 0;
+  border-bottom: 1px solid #eee;
+  font-size: 13px;
+}
+

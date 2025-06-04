@@ -1,0 +1,16 @@
+# Fichiers sensibles
+.env
+.env.local
+config.js
+*.key
+*.token
+
+# Dépendances node.js
+node_modules/
+
+# Fichiers système
+.DS_Store
+Thumbs.db
+
+# Autres
+*.log

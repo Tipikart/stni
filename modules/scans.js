@@ -163,10 +163,7 @@ exports.processScan = function(req, res) {
     }
   }
   
-  // IMPORTANT : Modifier la logique ici pour gérer la blockchain correctement
-  
-  // D'abord, essayer d'enregistrer sur la blockchain
-  // Enregistrer sur la blockchain
+  // Enregistrer le scan sur la blockchain
 blockchainModule.recordScanOnBlockchain({
   ...data,
   max_scans_per_uuid: qrItem.max_scans_per_uuid || 1,

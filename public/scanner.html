@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="theme-color" content="#0066ff">
+  <title>Scanner QR Code</title>
+  <link rel="stylesheet" href="/css/scanner.css">
+</head>
+<body>
+  <div class="container">
+    <h1>🔍 Scanner QR Code</h1>
+    <div id="info">
+      <p>Vous êtes sur le point de scanner :</p>
+      <span id="location-name" class="location">Chargement...</span>
+    </div>
+    
+    <div id="loading" class="loading">Enregistrement du scan en cours</div>
+    <div id="result" class="message"></div>
+    
+    <button id="scan-button" class="scan-button" style="display: none;">
+      Scanner maintenant
+    </button>
+  </div>
+
+  <!-- Debug caché par défaut -->
+  <div class="debug-container" id="debug-container">
+    <h3>Informations de débogage</h3>
+    <p>UUID appareil: <span id="debug-uuid">Non généré</span></p>
+    <p>Paramètres URL: <span id="debug-params"></span></p>
+    <div id="debug-console" class="debug-console"></div>
+  </div>
+
+  <script src="/js/scanner.js"></script>
+</body>
+</html>

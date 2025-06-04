@@ -78,7 +78,6 @@ exports.getLogs = function(req, res) {
 };
 
 // Traiter un nouveau scan
-// Traiter un nouveau scan
 exports.processScan = function(req, res) {
   const data = {
     uuid: req.query.uuid || uuidv4(),

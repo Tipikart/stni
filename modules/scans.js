@@ -38,7 +38,7 @@ exports.getLogs = function(req, res) {
       const logs = JSON.parse(fs.readFileSync(scanLogFile, 'utf8'));
       
       // Options de filtrage (facultatives)
-      const { type, location, from, to } = req.query;
+  const { type, location, from, to, limit } = req.query;
       
       let filteredLogs = logs;
       
@@ -65,7 +65,16 @@ exports.getLogs = function(req, res) {
       }
       
       console.log(`Logs filtrés: ${filteredLogs.length}/${logs.length}`);
-      
+
+      if (limit) {
+        const n = parseInt(limit, 10);
+        if (!isNaN(n) && n > 0) {
+          filteredLogs = filteredLogs
+            .sort((a, b) => b.timestamp - a.timestamp)
+            .slice(0, n);
+        }
+      }
+
       res.json(filteredLogs);
     } else {
       console.log("⚠️ Fichier de logs non trouvé");

@@ -1,0 +1,68 @@
+[
+  {
+    "uuid": "9b724120-5d3b-4eb4-b52c-056720608e4d",
+    "location_id": "BBBBBBBBBBBBBBBBBBBBBBBB",
+    "scan_type": "auto_test-de-campagne-denregistrement-anonyme_20250513",
+    "timestamp": 1747190115,
+    "blockchain_status": "success",
+    "transaction_id": "b7ce4ec3b29df7a0bdcae9e764b70ce8f346364374090e60c5ab53a3b708fb11",
+    "block_num": 4755
+  },
+  {
+    "uuid": "9b724120-5d3b-4eb4-b52c-056720608e4d",
+    "location_id": "BBBBBBBBBBBBBBBBBBBBBBBB",
+    "scan_type": "auto_test-de-campagne-denregistrement-anonyme_20250513",
+    "timestamp": 1747190175,
+    "blockchain_status": "success",
+    "transaction_id": "28264d9dc305025b115b1df005087cdc6a09cde8d7d2bc04c961c3f34cc71c4e",
+    "block_num": 4873
+  },
+  {
+    "uuid": "9b724120-5d3b-4eb4-b52c-056720608e4d",
+    "location_id": "Stella",
+    "scan_type": "auto_test-de-campagne-denregistrement-anonyme_20250513",
+    "timestamp": 1747195865,
+    "blockchain_status": "failed",
+    "blockchain_error": "❌ Wallet verrouillé - scan annulé"
+  },
+  {
+    "uuid": "9b724120-5d3b-4eb4-b52c-056720608e4d",
+    "location_id": "Musée léon dierx",
+    "scan_type": "auto_test-de-campagne-denregistrement-anonyme_20250513",
+    "timestamp": 1747195873,
+    "blockchain_status": "failed",
+    "blockchain_error": "❌ Wallet verrouillé - scan annulé"
+  },
+  {
+    "uuid": "9b724120-5d3b-4eb4-b52c-056720608e4d",
+    "location_id": "Maison du volcan",
+    "scan_type": "auto_test-de-campagne-denregistrement-anonyme_20250513",
+    "timestamp": 1747195879,
+    "blockchain_status": "failed",
+    "blockchain_error": "❌ Wallet verrouillé - scan annulé"
+  },
+  {
+    "uuid": "9b724120-5d3b-4eb4-b52c-056720608e4d",
+    "location_id": "Col des boeufs",
+    "scan_type": "auto_test-de-campagne-denregistrement-anonyme_20250513",
+    "timestamp": 1747195886,
+    "blockchain_status": "failed",
+    "blockchain_error": "❌ Wallet verrouillé - scan annulé"
+  },
+  {
+    "uuid": "9b724120-5d3b-4eb4-b52c-056720608e4d",
+    "location_id": "Suivi mission",
+    "scan_type": "auto_suivi-tamarhauts_20250518",
+    "timestamp": 1747570442,
+    "blockchain_status": "failed",
+    "blockchain_error": "❌ Wallet verrouillé - scan annulé"
+  },
+  {
+    "uuid": "9b724120-5d3b-4eb4-b52c-056720608e4d",
+    "location_id": "dsfsfsdf",
+    "scan_type": "auto_test_20250609",
+    "timestamp": 1749463131,
+    "blockchain_status": "failed",
+    "blockchain_error": "❌ Wallet verrouillé - scan annulé"
+  }
+]

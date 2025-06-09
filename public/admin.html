@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Admin QR Tracker - Campagnes</title>
+  
+  <!-- CSS -->
+  <link rel="stylesheet" href="/css/admin.css">
+  
+  <!-- Bibliothèques externes -->
+  <script src="/libs/chart.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.25/jspdf.plugin.autotable.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+  
+ <!-- Scripts de l'application dans le bon ordre -->
+<script src="/js/admin/config.js"></script>
+<script src="/js/admin/campaigns.js"></script>  <!-- Charger campaigns.js en premier -->
+<script src="/js/admin/ui.js"></script>         <!-- Puis ui.js -->
+<script src="/js/admin/charts.js"></script>
+<script src="/js/admin/pdf.js"></script>
+<script src="/js/admin/pseudonymisation.js"></script>
+
+
+  <script>
+    // Vérifier que Chart.js est bien chargé
+    window.onload = function() {
+      if (typeof Chart === 'undefined') {
+        console.error("Chart.js n'est pas disponible après chargement");
+        document.getElementById('error-message').textContent = 
+          "Erreur: Chart.js n'a pas pu être chargé. Veuillez rafraîchir la page.";
+        document.getElementById('error-message').style.display = 'block';
+      } else {
+        console.log("Chart.js chargé avec succès");
+        // Créer une variable globale pour sécuriser l'accès
+        window.ChartInstance = Chart;
+      }
+    };
+  </script>
+<script>
+function showCenterMessage(text, duration = 3000) {
+  const el = document.getElementById('center-message');
+  if (!el) return;
+
+  el.textContent = text;
+  el.style.display = 'block';
+
+  setTimeout(() => {
+    el.style.display = 'none';
+  }, duration);
+}
+</script>
+  
+</head>
+<!-- reste du code HTML inchangé -->
+
+
+<body>
+
+  
+  <div id="stni-notice">
+    Ce cockpit STNI fonctionne sans collecte de données personnelles. Toute tentative d’identification, de traçage ou de revente contrevient aux principes fondamentaux du système et aux droits d’auteur de ses créateurs.
+  </div>
+
+<div class="main-container">
+  <div class="header-section">
+    <h1>QR Tracker</h1>
+    
+<div class="export-buttons">
+  <button id="export-pdf-button" class="btn" onclick="generateStatsPDF()">
+    PDF
+  </button>
+  <button id="export-json-button" class="btn" onclick="exportGlobalJSON()">
+    JSON
+  </button>
+  <button id="export-xls-button" class="btn" onclick="exportGlobalXLS()">
+    EXCEL
+  </button>
+</div>
+  </div>
+
+  <div id="error-message"></div>
+  <div id="status-message"></div>
+
+
+  <div class="campaigns-section">
+    <div class="campaigns-header">
+      <h2>Mes Campagnes</h2>
+      <div class="header-buttons">
+         <button id="open-create-popup" class="btn btn-primary">
+          <span>+</span> Nouvelle campagne
+        </button>
+        <button id="open-manage-campaigns" class="btn btn-secondary" onclick="openFirstCampaign()">
+          <span>⚙️</span> Gérer mes campagnes
+        </button>
+       
+      </div>
+    </div>
+    
+    <div id="campaigns-list" class="campaigns-grid"></div>
+  </div>
+
+
+
+
+<!-- Container pour les popups des campagnes -->
+<div id="campaign-popup-container"></div>
+
+<!-- Informations de débogage -->
+<div class="debug-info" id="debug-info"></div>
+
+<!-- Scripts -->
+
+
+<script>
+function switchToImportView() {
+  document.getElementById('create-view').style.display = 'none';
+  document.getElementById('import-view').style.display = 'block';
+  
+  // Initialiser le module d'import si nécessaire
+  if (!document.getElementById('pseudonymisation-module').innerHTML) {
+    // Le module sera automatiquement initialisé par pseudonymisation.js
+  }
+}
+
+function switchToCreateView() {
+  document.getElementById('import-view').style.display = 'none';
+  document.getElementById('create-view').style.display = 'block';
+}
+
+function closeCreatePopup() {
+  document.getElementById('create-campaign-popup').style.display = 'none';
+  // Réinitialiser à la vue principale
+  switchToCreateView();
+}
+
+
+</script>
+<div id="center-message" style="display:none; position:fixed; top:50%; left:50%; transform:translate(-50%, -50%);
+background:#28a745; color:white; padding:20px 30px; border-radius:12px; font-size:18px; z-index:9999; box-shadow:0 0 20px rgba(0,0,0,0.3);">
+</div>
+
+<div id="confirm-overlay" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.4); z-index:9998;">
+  <div style="background:white; padding:20px 30px; border-radius:12px; max-width:400px; margin:10% auto; text-align:center; box-shadow:0 0 20px rgba(0,0,0,0.3);">
+    <div id="confirm-message" style="margin-bottom:20px; font-size:18px;"></div>
+    <button id="confirm-yes" style="margin-right:10px;">✅ Oui</button>
+    <button id="confirm-no">❌ Non</button>
+  </div>
+</div>
+
+<div id="create-campaign-popup" class="modal-overlay" style="display:none;">
+  <div class="modal-content">
+    <!-- Vue principale de création -->
+    <div id="create-view" style="display: block;">
+      <h2>➕ Nouvelle campagne</h2>
+      <form id="create-campaign-form">
+        <label>Nom :</label>
+        <input type="text" name="name" required>
+        <label>Description :</label>
+        <textarea name="description"></textarea>
+        <input type="hidden" name="scan_type" id="auto-scan-type">
+
+        <div style="margin-top: 15px;">
+          <button type="submit" class="btn-submit">Créer</button>
+          <button type="button" onclick="closeCreatePopup()" class="btn-cancel">Annuler</button>
+        </div>
+      </form>
+      
+      <!-- ➖ Séparateur -->
+      <hr style="margin:18px 0">
+      <!-- ✅ nouveau bouton -->
+      <div style="text-align:center">
+        <button type="button"
+                id="btn-create-from-list"
+                class="btn-from-list"
+                style="background:#28a745;color:#fff;padding:8px 16px;border:none;border-radius:4px;cursor:pointer"
+                onclick="switchToImportView()">
+          ou créer à partir d'une liste
+        </button>
+      </div>
+    </div>
+
+    <!-- Vue d'import -->
+    <div id="import-view" style="display: none;">
+      <h2>📥 Importer une liste</h2>
+      
+      <!-- le container attendu par pseudonymisation.js -->
+      <div id="pseudonymisation-module"></div>
+      
+      <div style="margin-top:15px;text-align:center">
+        <button type="button" onclick="switchToCreateView()" class="btn-cancel">← Retour</button>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>

@@ -1,6 +1,6 @@
 // Gestionnaire des campagnes et QR codes
 const DEBUG = false;
-const SERVER_URL = "http://192.168.42.88:3000";
+const SERVER_URL = window.location.origin;
 let campaigns = [];
 
 let campaignsPerPage = 10;  // Nombre de campagnes par page
@@ -282,7 +282,7 @@ function addQR(e, index) {
   const campaign = campaigns[index];
   
   // Assurez-vous d'utiliser une URL complète
-  const baseUrl = 'http://192.168.42.88:3000'; // Votre IP locale
+const baseUrl = window.location.origin;// Votre IP locale
   const url = `${baseUrl}/scanner?location_id=${encodeURIComponent(location)}&scan_type=${encodeURIComponent(campaign.type)}`;
   
   console.log("URL complète générée:", url);

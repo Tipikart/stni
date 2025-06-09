@@ -123,8 +123,7 @@ exports.saveQR = function(req, res) {
   if (!campaign) return res.status(404).send("❌ Campagne introuvable");
 
   // IMPORTANT: S'assurer que l'URL est complète
-  const baseUrl = 'http://192.168.42.88:3000'; // Votre IP
-  
+  const baseUrl = 'http://192.168.42.88:3000'; // Votre IPconst baseUrl = process.env.NODE_ENV === 'production' ? 'https://stni.onrender.com' : 'http://localhost:3000';  
   const qrToSave = {
     location: newQR.location,
     location_id: newQR.location_id,

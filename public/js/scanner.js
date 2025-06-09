@@ -119,7 +119,7 @@ function generateUUID() {
 
 // Fonction pour récupérer l'URL du serveur
 function getServerUrl() {
-  return 'http://192.168.42.88:3000';
+  return window.location.origin;
 }
 
 // Fonctions d'interface utilisateur

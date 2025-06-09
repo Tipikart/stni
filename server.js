@@ -14,7 +14,7 @@ const os = require('os');
 
 // Configuration de base
 const app = express();
-const PORT = 3000;
+const PORT = process.env.PORT || 3000;
 const DATA_DIR      = path.join(__dirname, 'data');
 const DATA_FILE     = path.join(DATA_DIR, 'campaigns.json');
 const SCAN_LOG_FILE = path.join(DATA_DIR, 'scanlogs.json');
@@ -29,11 +29,12 @@ console.log("📁 Répertoire courant:", __dirname);
 
 // Démarrer le serveur
 app.listen(PORT, () => {
-  const localIP = getLocalIP();
-  console.log(`🚀 Serveur QR Tracker actif sur http://localhost:${PORT}`);
-  console.log(`📱 Pour les tests mobiles, utilisez: http://${localIP}:${PORT}`);
-  console.log(`📂 Interface admin disponible sur:   http://${localIP}:${PORT}/admin.html`);
-  console.log(`📂 Interface scanner disponible sur: http://${localIP}:${PORT}/scanner`);
+  const isProduction = process.env.NODE_ENV === 'production' || process.env.RENDER;
+  const baseUrl = isProduction ? 'https://stni.onrender.com' : `http://localhost:${PORT}`;
+  
+  console.log(`🚀 Serveur QR Tracker actif sur ${baseUrl}`);
+  console.log(`📂 Interface admin disponible sur: ${baseUrl}/admin.html`);
+  console.log(`📂 Interface scanner disponible sur: ${baseUrl}/scanner`);
   
   // Vérifier et créer le fichier de données s'il n'existe pas
   if (!fs.existsSync(DATA_FILE)) {
